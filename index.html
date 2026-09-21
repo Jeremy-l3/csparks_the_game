@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dead Pattern, Live Tension</title>
+<meta name="description" content="A print-and-play Sociocracy 3.0 card game about order of operations: 13 pattern cards, three situations with hidden tolerances, and a verified inversion matrix.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Dead Pattern, Live Tension">
+<meta property="og:description" content="A print-and-play Sociocracy 3.0 card game about order of operations.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,500;0,700;1,500&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{color-scheme:light dark}
+  *{margin:0}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0}
+  img{max-width:100%;height:auto}
+  [hidden]{display:none!important}
+</style>
+<style>
+:root{
+  --paper:#F1F3EF; --card:#FBFCFA; --ink:#17211E; --ink-2:#485651; --ink-3:#7B8A84;
+  --rule:#C5CCC3; --rule-2:#DFE4DD;
+  --heat:#B44A24; --leg:#2C6A89; --trust:#4C7638; --rig:#6A5A78;
+  --accent:#2C6A89;
+  --display:"Bitter",Georgia,"Times New Roman",serif;
+  --body:"Source Sans 3","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#141A18; --card:#1C2422; --ink:#E4E9E2; --ink-2:#A6B2AC; --ink-3:#7D8A84;
+  --rule:#37423E; --rule-2:#2A3330;
+  --heat:#E0784E; --leg:#6FAFCB; --trust:#8FBE73; --rig:#A793B6; --accent:#6FAFCB;
+}}
+:root[data-theme="dark"]{
+  --paper:#141A18; --card:#1C2422; --ink:#E4E9E2; --ink-2:#A6B2AC; --ink-3:#7D8A84;
+  --rule:#37423E; --rule-2:#2A3330;
+  --heat:#E0784E; --leg:#6FAFCB; --trust:#8FBE73; --rig:#A793B6; --accent:#6FAFCB;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;
+  padding-inline:16px;padding-block:0;-webkit-font-smoothing:antialiased}
+.wrap{max-width:60rem;margin:0 auto;padding-block:40px 64px}
+h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:clamp(2rem,6vw,3.1rem);line-height:1.04;font-weight:700;letter-spacing:-.015em}
+h2{font-size:1.5rem;font-weight:700;line-height:1.2}
+h3{font-size:1.06rem;font-weight:700}
+p{margin:0}
+a{color:var(--accent)}
+.lede{font-size:1.14rem;color:var(--ink-2);max-width:40rem}
+.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.masthead{display:flex;flex-direction:column;gap:14px;padding-bottom:28px;border-bottom:2px solid var(--ink)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--mono);font-size:.74rem;color:var(--ink-2)}
+.meta span{white-space:nowrap}
+section{padding-block:34px;border-bottom:1px solid var(--rule)}
+.plate{display:flex;flex-direction:column;gap:18px}
+.plate-head{display:flex;gap:14px;align-items:baseline}
+.plate-no{font-family:var(--mono);font-size:.8rem;font-weight:600;color:var(--ink-3);padding-top:.25em}
+.stack{display:flex;flex-direction:column;gap:12px;max-width:44rem}
+.cols{display:grid;gap:22px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+ul,ol{margin:0;padding-left:1.25em;display:flex;flex-direction:column;gap:7px;max-width:44rem}
+li::marker{color:var(--ink-3)}
+strong{font-weight:600}
+em{font-style:italic}
+.mono{font-family:var(--mono)}
+.note{font-size:.9rem;color:var(--ink-2)}
+ 
+/* dial chips */
+.d{display:inline-flex;align-items:center;gap:.4em;font-family:var(--mono);font-size:.72rem;font-weight:500;
+  padding:.16em .5em .16em .42em;border-left:3px solid var(--dc,var(--ink-3));background:var(--rule-2);
+  white-space:nowrap;line-height:1.5}
+.d.heat{--dc:var(--heat)} .d.leg{--dc:var(--leg)} .d.trust{--dc:var(--trust)} .d.rig{--dc:var(--rig)}
+.d.cap{--dc:var(--ink-2)} .d.ins{--dc:var(--ink-2)}
+.dialrow{display:flex;flex-wrap:wrap;gap:6px}
+ 
+.dialdef{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;align-items:baseline;max-width:44rem}
+.dialdef dt{font-family:var(--mono);font-size:.78rem;font-weight:600;border-left:3px solid var(--dc);padding-left:.5em}
+.dialdef dd{margin:0;font-size:.95rem;color:var(--ink-2)}
+ 
+/* cards */
+.sheet{margin-top:8px}
+.sheet-label{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
+.grid{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(228px,1fr))}
+.c{background:var(--card);border:1px solid var(--rule);display:flex;flex-direction:column;gap:7px;
+  padding:11px 12px 12px;min-height:250px}
+.c-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;
+  border-bottom:1px solid var(--rule-2);padding-bottom:6px}
+.c-kind{font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.c-cost{font-family:var(--mono);font-size:.78rem;font-weight:600;border:1px solid var(--rule);padding:0 .4em;white-space:nowrap}
+.c-name{font-family:var(--display);font-size:1.02rem;font-weight:700;line-height:1.15}
+.c-text{font-size:.845rem;line-height:1.42;color:var(--ink-2);flex:1}
+.c-mech{display:flex;flex-direction:column;gap:5px;border-top:1px solid var(--rule-2);padding-top:7px}
+.c-req{font-family:var(--mono);font-size:.66rem;color:var(--ink-2);line-height:1.45}
+.c-req b{font-weight:600;color:var(--ink)}
+.c.drift{min-height:112px}
+.c.standing{min-height:158px}
+.c.act{border-style:dashed}
+ 
+/* situations */
+.sit{border:1px solid var(--rule);background:var(--card);padding:18px 18px 20px;display:flex;flex-direction:column;gap:14px}
+.sit-head{display:flex;flex-wrap:wrap;gap:4px 16px;align-items:baseline;justify-content:space-between}
+.sit-name{font-family:var(--display);font-size:1.3rem;font-weight:700}
+.sit-scale{font-family:var(--mono);font-size:.72rem;color:var(--ink-3)}
+.sit-fiction{font-size:.96rem;color:var(--ink-2);max-width:44rem}
+.startrow{display:flex;flex-wrap:wrap;gap:6px}
+.budget{font-family:var(--mono);font-size:.76rem;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:4px 14px}
+details{border:1px solid var(--rule);background:var(--rule-2);padding:0}
+details>summary{cursor:pointer;padding:9px 13px;font-family:var(--mono);font-size:.74rem;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--ink-2)}
+details>summary:hover{color:var(--ink)}
+details[open]>summary{border-bottom:1px solid var(--rule)}
+.det-body{padding:14px;display:flex;flex-direction:column;gap:11px;background:var(--card)}
+ 
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--rule)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--card);min-width:30rem}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule-2);vertical-align:top}
+th{font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+td.m{font-family:var(--mono);font-size:.78rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.win{color:var(--trust);font-weight:600}
+.loss{color:var(--ink-3)}
+ 
+/* tracker */
+.track{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;align-items:center;max-width:32rem}
+.track-l{font-family:var(--mono);font-size:.74rem;font-weight:600;border-left:3px solid var(--dc);padding-left:.5em}
+.pips{display:flex;gap:5px}
+.pip{width:20px;height:20px;border:1px solid var(--rule);background:var(--card)}
+.roundgrid{display:grid;gap:5px;grid-template-columns:repeat(7,minmax(0,1fr));max-width:40rem}
+.rbox{border:1px solid var(--rule);background:var(--card);aspect-ratio:1/1.3;display:flex;align-items:flex-start;
+  justify-content:flex-start;padding:4px;font-family:var(--mono);font-size:.62rem;color:var(--ink-3)}
+ 
+.printhint{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);border:1px dashed var(--rule);padding:8px 11px}
+footer{padding-block:28px;font-size:.84rem;color:var(--ink-3);font-family:var(--mono)}
+ 
+@media (max-width:640px){
+  .c{min-height:0}
+  .roundgrid{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media print{
+  :root{--paper:#fff;--card:#fff;--ink:#000;--ink-2:#333;--ink-3:#666;--rule:#999;--rule-2:#ddd;
+        --heat:#000;--leg:#000;--trust:#000;--rig:#000;--accent:#000}
+  body{font-size:10pt;padding-inline:0}
+  .wrap{max-width:none;padding-block:0}
+  .printhint,footer{display:none}
+  section{padding-block:14pt;break-inside:avoid}
+  .sheet{break-before:page}
+  .grid{grid-template-columns:repeat(3,61mm);gap:0;justify-content:start}
+  .c{min-height:88mm;border:1px dashed #999;break-inside:avoid;padding:8px 9px}
+  .c.drift,.c.standing{min-height:44mm}
+  .c-text{font-size:8.4pt}
+  details{border:0;background:none} details>summary{display:none}
+  details .det-body{border:1px solid #999;padding:10pt}
+  .sit{break-inside:avoid}
+  @page{size:letter;margin:10mm}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+ 
+/* standalone-page furniture */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.tbtn{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-2);background:transparent;border:1px solid var(--rule);padding:.35em .8em;cursor:pointer}
+.tbtn:hover{color:var(--ink);border-color:var(--ink-3)}
+.tbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media print{.tbtn,.topbar .tbtn{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+ 
+<header class="masthead">
+  <div class="topbar">
+    <p class="eyebrow">Sociocracy 3.0 · playtest kit 0.1 · print and cut</p>
+    <button type="button" id="theme-toggle" class="tbtn">Theme</button>
+  </div>
+  <h1>Dead Pattern,<br>Live Tension</h1>
+  <p class="lede">A cooperative card game about <em>order of operations</em>. The patterns are not the hard part. Knowing which one this situation can bear, right now, is the hard part — and the game is built so that a correct pattern played at the wrong moment does visible damage three rounds later.</p>
+  <div class="meta">
+    <span>4–5 players (scales 3–8)</span>
+    <span>45–70 min per situation</span>
+    <span>29 cards · 3 situations</span>
+    <span>One player keeps the situation</span>
+  </div>
+</header>
+ 
+<p class="printhint">Print this page (Cmd/Ctrl-P, letter, margins 10mm). Card sheets start on their own pages, 3 across. Cut on the dashed lines. The Keeper panels print on the situation pages — fold or cut those off before the table sees them.</p>
+ 
+<section class="plate">
+  <div class="plate-head"><span class="plate-no">01</span><h2>What the game is testing</h2></div>
+  <div class="stack">
+    <p>Every card here is a real Sociocracy 3.0 pattern, worded to be usable in an actual room. The game adds one thing S3 does not hand you: a situation with a tolerance, and consequences that arrive late.</p>
+    <p>Three claims are on trial. If they hold at your table, the design works and the rest is production. If they don't, the numbers are wrong, not the thesis — tell me which one broke.</p>
+    <ol>
+      <li><strong>Novices over-build.</strong> Given a hot tension and high trust, new players reach for structure — a Circle, a role, a decision — and ossify a situation that needed almost nothing structural at all.</li>
+      <li><strong>The same sequence inverts.</strong> A line of play that wins one situation loses another for a reason that is not bad luck. There is no strongest opening.</li>
+      <li><strong>Diagnosis is a real cost.</strong> Spending capacity to <em>look</em> instead of act feels like waste in the moment and pays for itself. This is the move facilitation never rewards, and the one the game exists to teach.</li>
+    </ol>
+    <p class="note">One design rule worth knowing before you read the cards: <strong>every card states exactly what it does. No card states when it is wrong.</strong> Effects are printed because you should be able to reason. Thresholds are hidden because you should have to read the room.</p>
+  </div>
+</section>
+ 
+<section class="plate">
+  <div class="plate-head"><span class="plate-no">02</span><h2>The four dials</h2></div>
+  <div class="stack">
+    <p>The situation is four numbers, each 0–5, plus a capacity budget. Everything you play moves them.</p>
+    <dl class="dialdef">
+      <dt style="--dc:var(--heat)">HEAT</dt>
+      <dd>How live the tension still is. Hot tension is workable; you need it. <strong>Heat reaching 0 ends the game</strong> — the situation has calcified and no pattern can reach it. Making decisions cools it.</dd>
+      <dt style="--dc:var(--leg)">LEGIBILITY</dt>
+      <dd>How much of what is happening is actually visible to the people in it.</dd>
+      <dt style="--dc:var(--trust)">TRUST</dt>
+      <dd>Relational credit. Low trust doesn't block structure; it makes structure land as imposition.</dd>
+      <dt style="--dc:var(--rig)">RIGIDITY</dt>
+      <dd>Accumulated structure. It only goes up — <strong>one card in the deck reduces it</strong>. Every situation has a hidden <span class="mono">Rigidity Cap</span>. Exceed it and the game ends immediately: ossified.</dd>
+      <dt style="--dc:var(--ink-2)">CAPACITY</dt>
+      <dd>What the group can actually spend this round. Refreshes each round to the situation's base, plus or minus any ongoing modifiers. Unspent capacity does not carry over.</dd>
+    </dl>
+    <p class="note">Rigidity is the whole engine. It is not a penalty track — it is what structure <em>is</em>. Every structural pattern in S3 is genuinely good and genuinely adds rigidity, and the cap is how much this particular group can carry before its own scaffolding stops it from responding to anything new.</p>
+  </div>
+</section>
+ 
+<section class="plate">
+  <div class="plate-head"><span class="plate-no">03</span><h2>A round</h2></div>
+  <div class="stack">
+    <ol>
+      <li><strong>Drift.</strong> The Keeper turns the next Drift card and applies it. Drift is structural, not villainous — attention decays, people leave, load arrives, process reasserts. It happens whether or not you deserve it.</li>
+      <li><strong>Declare.</strong> The group names <em>up to two</em> of the seven principles this round's plays will advance. Write them down before playing anything. This is the scoring move and it is where the learning is.</li>
+      <li><strong>Draw.</strong> Each player draws to a hand of five from the pattern deck. Draw is generous on purpose: you are meant to read many more cards than you play.</li>
+      <li><strong>Play.</strong> In any order, spending from one shared capacity pool. Discuss freely. A card needs its prerequisites in play and, for some cards, the right holder.</li>
+      <li><strong>Resolve.</strong> The Keeper applies effects, then reveals which principles actually advanced. Score it. Discard down to three; unplayed cards go to the bottom.</li>
+    </ol>
+    <p class="note">You may revise the declaration mid-round once, for <span class="mono">1 capacity</span>. That is the advanced move: noticing your read was wrong while you can still act on it.</p>
+  </div>
+</section>
+ 
+<section class="plate">
+  <div class="plate-head"><span class="plate-no">04</span><h2>Declaring, and the seven principles</h2></div>
+  <div class="stack">
+    <p>You do not score for fixing the situation. You score for <strong>reading it correctly</strong>.</p>
+    <ul>
+      <li>Each declared principle that actually advanced this round: <span class="mono">+2 Insight</span>.</li>
+      <li>Each declared principle that did not: <span class="mono">0</span>, and tick it on the sheet. The principles you keep declaring and missing are your blind spots in the topology — that column is the most useful thing on the score sheet.</li>
+      <li>Each Retrospective played: <span class="mono">+1 Insight</span>.</li>
+    </ul>
+    <p>The group either brings the situation to viability or it doesn't — that part is pass/fail and shared. Insight is how well you saw what you were doing while you did it. A table can lose the situation with a high Insight score, and that is a better evening than winning on luck.</p>
+    <p class="note">The seven principles are the scoring axes, not cards. They are the topology of the paradigm: swap them out and you have a different deck. Effectiveness · Consent · Empiricism · Continuous Improvement · Equivalence · Transparency · Accountability. The Keeper's table on the situation sheet says which plays advance which.</p>
+  </div>
+</section>
+ 
+<section class="plate">
+  <div class="plate-head"><span class="plate-no">05</span><h2>Standings, and the cost of the right person</h2></div>
+  <div class="stack">
+    <p>Deal one Standing card to each player at setup. Some patterns name a holder. A pattern played by the wrong person still resolves — it just resolves worse, because that is what happens.</p>
+    <p><strong>Route to the Holder</strong> costs <span class="mono">1 capacity</span>. Getting the right person into the room takes time, and sometimes you correctly decide you cannot afford it. That trade is the point of the mechanic.</p>
+    <p class="note"><strong>Scaling.</strong> 4 players: drop External Stakeholder. 3 players: use Initiator, Steward, Newcomer. 6–8: split into two sub-groups working the same situation from one capacity pool, each with its own Steward — which is also the honest way to discover what Double Linking is for.</p>
+  </div>
+</section>
+ 
+<section class="plate">
+  <div class="plate-head"><span class="plate-no">06</span><h2>Ending</h2></div>
+  <div class="stack">
+    <p>The game ends early, and badly, if either of these happens:</p>
+    <ul>
+      <li><strong>Calcified</strong> — Heat reaches 0. You cooled the tension before you understood it.</li>
+      <li><strong>Ossified</strong> — Rigidity exceeds the situation's cap. You built more structure than this group could carry.</li>
+    </ul>
+    <p>Otherwise, at the end of the last round the Keeper reads the viability conditions. Meet all of them and the situation is <strong>viable</strong>: the group wins together. Fall short on any and it isn't — the Keeper says which, and that sentence is usually the best thing said all evening.</p>
+  </div>
+</section>
+ 
+<section class="sheet">
+  <p class="sheet-label">Cut sheet A — Pattern cards, 13</p>
+  <div class="grid">
+ 
+    <div class="c"><div class="c-top"><span class="c-kind">Pattern · relational</span><span class="c-cost">1</span></div>
+      <p class="c-name">Navigate via Tension</p>
+      <p class="c-text">Treat tension as information: a felt gap between what is and what could be. Bring it into the open and hold it there instead of resolving it away.</p>
+      <div class="c-mech"><div class="dialrow"><span class="d heat">HEAT +1</span></div>
+        <p class="c-req"><b>Needs</b> —<br><b>Holder</b> anyone<br>If Heat is already 5, gain <b>LEG +1</b> instead.</p></div></div>
+ 
+    <div class="c"><div class="c-top"><span class="c-kind">Pattern · relational</span><span class="c-cost">1</span></div>
+      <p class="c-name">Check-In (Rounds)</p>
+      <p class="c-text">Go round, one voice at a time, no interruption and no reply. Everyone hears where everyone actually is before anything else happens.</p>
+      <div class="c-mech"><div class="dialrow"><span class="d trust">TRUST +1</span><span class="d leg">LEG +1</span></div>
+        <p class="c-req"><b>Needs</b> —<br><b>Holder</b> anyone<br>Played by the <b>Newcomer</b>: <b>TRUST +1</b> more.</p></div></div>
+ 
+    <div class="c"><div class="c-top"><span class="c-kind">Pattern · individual</span><span class="c-cost">1</span></div>
+      <p class="c-name">Artful Participation</p>
+      <p class="c-text">Each person takes responsibility for acting toward the greatest effectiveness they can see — including naming out loud when the group's own agreements are not being kept.</p>
+      <div class="c-mech"><div class="dialrow"><span class="d trust">TRUST +1</span><span class="d cap">CAP +1 ongoing</span></div>
+        <p class="c-req"><b>Needs</b> —<br><b>Holder</b> anyone</p></div></div>
+ 
+    <div class="c"><div class="c-top"><span class="c-kind">Pattern · sensemaking</span><span class="c-cost">2</span></div>
+      <p class="c-name">Describe Organizational Drivers</p>
+      <p class="c-text">State the situation the group faces and why it needs a response: what is happening, its effect, what is needed, and for whom.</p>
+      <div class="c-mech"><div class="dialrow"><span class="d leg">LEG +2</span></div>
+        <p class="c-req"><b>Needs</b> HEAT 2+<br><b>Holder</b> Initiator — anyone else gets <b>LEG +1</b> only<br><b>Sets</b> DRIVERS</p></div></div>
+ 
+    <div class="c"><div class="c-top"><span class="c-kind">Pattern · sensemaking</span><span class="c-cost">1</span></div>
+      <p class="c-name">Governance Backlog</p>
+      <p class="c-text">Keep a visible, ordered list of the governance decisions the group still owes itself. Not a plan — a debt register.</p>
+      <div class="c-mech"><div class="dialrow"><span class="d leg">LEG +1</span></div>
+        <p class="c-req"><b>Needs</b> DRIVERS<br><b>Holder</b> anyone<br><b>Sets</b> BACKLOG</p></div></div>
+ 
+    <div class="c"><div class="c-top"><span class="c-kind">Pattern · structural</span><span class="c-cost">2</span></div>
+      <p class="c-name">Clarify &amp; Develop Domains</p>
+      <p class="c-text">Name a distinct area of responsibility and influence: its boundaries, its key responsibilities, its constraints, and who holds it.</p>
+      <div class="c-mech"><div class="dialrow"><span class="d leg">LEG +1</span><span class="d rig">RIG +1</span></div>
+        <p class="c-req"><b>Needs</b> DRIVERS<br><b>Holder</b> Steward<br><b>Sets</b> DOMAIN</p></div></div>
+ 
+    <div class="c"><div class="c-top"><span class="c-kind">Pattern · decision</span><span class="c-cost">2</span></div>
+      <p class="c-name">Proposal Forming</p>
+      <p class="c-text">Build a response to a driver together, working outward from the driver, before anyone starts arguing for an answer they arrived with.</p>
+      <div class="c-mech"><div class="dialrow"><span class="d leg">LEG +1</span></div>
+        <p class="c-req"><b>Needs</b> DRIVERS<br><b>Holder</b> anyone<br><b>Sets</b> PROPOSAL</p></div></div>
+ 
+    <div class="c"><div class="c-top"><span class="c-kind">Pattern · decision</span><span class="c-cost">2</span></div>
+      <p class="c-name">Consent Decision Making</p>
+      <p class="c-text">Put the proposal to those affected and act on it unless someone can name a reasoned objection — an argument that doing so would harm effectiveness.</p>
+      <div class="c-mech"><div class="dialrow"><span class="d trust">TRUST +1</span><span class="d rig">RIG +1</span><span class="d heat">HEAT −1</span></div>
+        <p class="c-req"><b>Needs</b> PROPOSAL + DOMAIN<br><b>Holder</b> Steward — anyone else: <b>RIG +1</b> more, no Consent credit<br><b>Sets</b> AGREEMENT · discards PROPOSAL</p></div></div>
+ 
+    <div class="c"><div class="c-top"><span class="c-kind">Pattern · empirical</span><span class="c-cost">2</span></div>
+      <p class="c-name">Evaluate &amp; Evolve Agreements</p>
+      <p class="c-text">Revisit an agreement against what actually happened since, and change it. Agreements are experiments with review dates, not settlements.</p>
+      <div class="c-mech"><div class="dialrow"><span class="d rig">RIG −1</span><span class="d leg">LEG +1</span><span class="d heat">HEAT +1</span></div>
+        <p class="c-req"><b>Needs</b> AGREEMENT<br><b>Holder</b> Steward<br>The only card that reduces Rigidity.</p></div></div>
+ 
+    <div class="c"><div class="c-top"><span class="c-kind">Pattern · structural</span><span class="c-cost">3</span></div>
+      <p class="c-name">Role Selection</p>
+      <p class="c-text">Select a person into a role by consent, from a described domain, with a term and a review date attached from the start.</p>
+      <div class="c-mech"><div class="dialrow"><span class="d trust">TRUST +1</span><span class="d rig">RIG +1</span><span class="d cap">CAP +1 ongoing</span></div>
+        <p class="c-req"><b>Needs</b> DOMAIN + AGREEMENT<br><b>Holder</b> Steward<br><b>Sets</b> ROLES</p></div></div>
+ 
+    <div class="c"><div class="c-top"><span class="c-kind">Pattern · structural</span><span class="c-cost">3</span></div>
+      <p class="c-name">Circle</p>
+      <p class="c-text">A semi-autonomous, self-governing group with a domain of its own, keeping its own backlog and making its own decisions by consent.</p>
+      <div class="c-mech"><div class="dialrow"><span class="d rig">RIG +2</span><span class="d leg">LEG +1</span><span class="d cap">CAP +1 ongoing</span></div>
+        <p class="c-req"><b>Needs</b> DOMAIN + BACKLOG<br><b>Holder</b> Steward<br><b>Sets</b> CIRCLE (count them)</p></div></div>
+ 
+    <div class="c"><div class="c-top"><span class="c-kind">Pattern · structural</span><span class="c-cost">3</span></div>
+      <p class="c-name">Double Linking</p>
+      <p class="c-text">Two members of each circle sit in the other's decision making, so influence runs both ways rather than down.</p>
+      <div class="c-mech"><div class="dialrow"><span class="d leg">LEG +2</span><span class="d trust">TRUST +1</span><span class="d rig">RIG +1</span></div>
+        <p class="c-req"><b>Needs</b> 2 CIRCLES<br><b>Holder</b> Steward</p></div></div>
+ 
+    <div class="c"><div class="c-top"><span class="c-kind">Pattern · empirical</span><span class="c-cost">1</span></div>
+      <p class="c-name">Retrospective</p>
+      <p class="c-text">Look back at a stretch of work together and name what to keep, what to drop, and what to try next.</p>
+      <div class="c-mech"><div class="dialrow"><span class="d leg">LEG +1</span><span class="d ins">INSIGHT +1</span></div>
+        <p class="c-req"><b>Needs</b> —<br><b>Holder</b> anyone<br>If AGREEMENT is in play: <b>TRUST +1</b>.</p></div></div>
+ 
+    <div class="c act"><div class="c-top"><span class="c-kind">Action · always available</span><span class="c-cost">1</span></div>
+      <p class="c-name">Read the Room</p>
+      <p class="c-text">Stop. Look at what you are actually inside of before you touch it.</p>
+      <div class="c-mech"><p class="c-req">Ask the Keeper <b>one</b> question and get a true answer:<br>— the Rigidity Cap<br>— one viability threshold<br>— the name of the next Drift card<br><br>Not a pattern card. Any player, any time, from the shared pool.</p></div></div>
+ 
+    <div class="c act"><div class="c-top"><span class="c-kind">Action · always available</span><span class="c-cost">1</span></div>
+      <p class="c-name">Route to the Holder</p>
+      <p class="c-text">Get the person who actually holds this into the room.</p>
+      <div class="c-mech"><p class="c-req">Pass a play to the player whose Standing it requires, so it resolves at full effect.<br><br>You may always decline to pay this and play it wrong on purpose. Sometimes that is correct.</p></div></div>
+ 
+  </div>
+</section>
+ 
+<section class="sheet">
+  <p class="sheet-label">Cut sheet B — Drift, 9 · Standings, 5</p>
+  <div class="grid">
+    <div class="c drift"><div class="c-top"><span class="c-kind">Drift</span></div><p class="c-name">Attention Decay</p>
+      <div class="c-mech"><div class="dialrow"><span class="d leg">LEG −1</span></div><p class="c-req">Nobody wrote it down. Nobody meant not to.</p></div></div>
+    <div class="c drift"><div class="c-top"><span class="c-kind">Drift</span></div><p class="c-name">Turnover</p>
+      <div class="c-mech"><div class="dialrow"><span class="d trust">TRUST −1</span><span class="d cap">CAP −1 this round</span></div><p class="c-req">Someone who held things leaves well.</p></div></div>
+    <div class="c drift"><div class="c-top"><span class="c-kind">Drift</span></div><p class="c-name">External Demand</p>
+      <div class="c-mech"><div class="dialrow"><span class="d cap">CAP −1 this round</span><span class="d heat">HEAT +1</span></div><p class="c-req">The outside world sets a date.</p></div></div>
+    <div class="c drift"><div class="c-top"><span class="c-kind">Drift</span></div><p class="c-name">Extraction Pressure</p>
+      <div class="c-mech"><div class="dialrow"><span class="d trust">TRUST −1</span><span class="d heat">HEAT +1</span></div><p class="c-req">If RIG is 4 or more: <b>TRUST −1</b>. Otherwise: <b>HEAT +1</b>. Rigid systems are the ones worth capturing.</p></div></div>
+    <div class="c drift"><div class="c-top"><span class="c-kind">Drift</span></div><p class="c-name">Quiet Capture</p>
+      <div class="c-mech"><div class="dialrow"><span class="d rig">RIG +1</span></div><p class="c-req">A decision moves outward. No one announced it.</p></div></div>
+    <div class="c drift"><div class="c-top"><span class="c-kind">Drift</span></div><p class="c-name">Cooling</p>
+      <div class="c-mech"><div class="dialrow"><span class="d heat">HEAT −1</span></div><p class="c-req">The tension becomes a thing people have stopped mentioning.</p></div></div>
+    <div class="c drift"><div class="c-top"><span class="c-kind">Drift</span></div><p class="c-name">Success Attracts Load</p>
+      <div class="c-mech"><div class="dialrow"><span class="d heat">HEAT +1</span><span class="d cap">CAP −1 this round</span></div><p class="c-req">It worked, so more arrived.</p></div></div>
+    <div class="c drift"><div class="c-top"><span class="c-kind">Drift</span></div><p class="c-name">Someone Writes It Down</p>
+      <div class="c-mech"><div class="dialrow"><span class="d leg">LEG +1</span></div><p class="c-req">Unasked, on their own time.</p></div></div>
+    <div class="c drift"><div class="c-top"><span class="c-kind">Drift</span></div><p class="c-name">Legacy Process Reasserts</p>
+      <div class="c-mech"><div class="dialrow"><span class="d rig">RIG +1</span></div><p class="c-req">The old form is still running underneath.</p></div></div>
+ 
+    <div class="c standing"><div class="c-top"><span class="c-kind">Standing</span></div><p class="c-name">Initiator</p>
+      <p class="c-text">You hold the original tension. You are the reason anyone is in the room.</p>
+      <div class="c-mech"><p class="c-req"><b>Holds</b> Describe Organizational Drivers</p></div></div>
+    <div class="c standing"><div class="c-top"><span class="c-kind">Standing</span></div><p class="c-name">Steward</p>
+      <p class="c-text">You hold the domain. Most structural authority runs through you, whether or not that is comfortable.</p>
+      <div class="c-mech"><p class="c-req"><b>Holds</b> Domains · Consent · Evaluate &amp; Evolve · Role Selection · Circle · Double Linking</p></div></div>
+    <div class="c standing"><div class="c-top"><span class="c-kind">Standing</span></div><p class="c-name">Participant</p>
+      <p class="c-text">You hold nothing formally and you are affected by everything.</p>
+      <div class="c-mech"><p class="c-req">Play anything with no holder requirement. You may raise a reasoned objection at any time, free.</p></div></div>
+    <div class="c standing"><div class="c-top"><span class="c-kind">Standing</span></div><p class="c-name">Newcomer</p>
+      <p class="c-text">You can still see what the long-timers have stopped noticing. This expires.</p>
+      <div class="c-mech"><p class="c-req">Check-In played by you: <b>TRUST +1</b> more.</p></div></div>
+    <div class="c standing"><div class="c-top"><span class="c-kind">Standing</span></div><p class="c-name">External Stakeholder</p>
+      <p class="c-text">Affected by the domain, not inside it. You live downstream.</p>
+      <div class="c-mech"><p class="c-req">Once per round, play Navigate via Tension for <b>0 capacity</b>.</p></div></div>
+  </div>
+</section>
+ 
+<section class="plate">
+  <div class="plate-head"><span class="plate-no">A</span><h2>The Lattice</h2></div>
+  <div class="sit">
+    <div class="sit-head"><span class="sit-name">The Lattice</span><span class="sit-scale">6 people · repair-and-reuse node · Ward 4, coastal district</span></div>
+    <p class="sit-fiction">Three years on friendship and a shared bench. Lately two of the six have been making calls the others hear about afterward, from someone else. Nobody is angry. Everyone is a little tired of not knowing, and nobody wants to be the one who turns this into a meeting.</p>
+    <div class="startrow">
+      <span class="d heat">HEAT 4</span><span class="d leg">LEG 1</span><span class="d trust">TRUST 4</span><span class="d rig">RIG 0</span>
+    </div>
+    <p class="budget"><span>Capacity 5 / round</span><span>5 rounds</span><span>In play: nothing</span></p>
+    <details><summary>Keeper panel — fold before play</summary>
+      <div class="det-body">
+        <p><strong>Rigidity Cap 3.</strong> Viability: <span class="mono">LEG ≥ 4 · TRUST ≥ 4 · HEAT ≥ 2</span>.</p>
+        <p><strong>Drift order:</strong> <span class="mono">Attention Decay → Quiet Capture → Attention Decay → Cooling → Someone Writes It Down</span></p>
+        <p class="note">This situation forgives <em>one</em> structural step and kills the second. A domain plus a consent decision lands at Rigidity 3 with the Quiet Capture drift — exactly at cap, and viable. A Circle on top is 5 and the game ends. There are two winning lines here, which is deliberate: the lesson is not "never build", it is "this group can carry one thing".</p>
+        <p class="note">Narrate the ossification when it comes, don't just announce it: the bench now has a rota nobody consented to, two people have stopped coming on Thursdays, and the thing they were actually worried about has never once been said out loud.</p>
+      </div>
+    </details>
+  </div>
+</section>
+ 
+<section class="plate">
+  <div class="plate-head"><span class="plate-no">B</span><h2>The Ward</h2></div>
+  <div class="sit">
+    <div class="sit-head"><span class="sit-name">The Ward</span><span class="sit-scale">~40 people · three crews · municipal water commons</span></div>
+    <p class="sit-fiction">A procurement scandal took out the coordinating body eight months ago. The three crews still run the filtration beds and no longer share numbers with each other. Everyone is professional. Nothing is hidden exactly, and nothing is visible either. The tension is not escalating — it is cooling into something that will soon be called "how it is".</p>
+    <div class="startrow">
+      <span class="d heat">HEAT 3</span><span class="d leg">LEG 1</span><span class="d trust">TRUST 1</span><span class="d rig">RIG 2</span>
+    </div>
+    <p class="budget"><span>Capacity 5 / round</span><span>6 rounds</span><span>In play: nothing</span></p>
+    <details><summary>Keeper panel — fold before play</summary>
+      <div class="det-body">
+        <p><strong>Rigidity Cap 6.</strong> Viability: <span class="mono">LEG ≥ 4 · TRUST ≥ 3 · HEAT ≥ 2 · AGREEMENT in play</span>.</p>
+        <p><strong>Drift order:</strong> <span class="mono">Cooling → Attention Decay → Extraction Pressure → Turnover → Cooling → Quiet Capture</span></p>
+        <p class="note">Here they <em>must</em> build — restraint alone cannot reach an agreement, and two Cooling drifts punish waiting. But Trust 1 means structure played early lands as imposition, and every Consent decision costs Heat. The winning shape is trust and legibility first, then exactly one real agreement, then evaluate it.</p>
+        <p class="note">If they open with Consent Decision Making, do not warn them. The purest demonstration in the kit is a table that decides its way to Heat 0 by round three, having done nothing but correct S3 the entire time.</p>
+      </div>
+    </details>
+  </div>
+</section>
+ 
+<section class="plate">
+  <div class="plate-head"><span class="plate-no">C</span><h2>The Interchange</h2></div>
+  <div class="sit">
+    <div class="sit-head"><span class="sit-name">The Interchange</span><span class="sit-scale">~120 people · inherited freight-and-repair federation</span></div>
+    <p class="sit-fiction">It works. Every handoff is logged, every form filed, every circle meets on schedule. The agreements that run it were consented to by people who have all since left, and nobody currently here can say what the federation is for. When you ask, people describe the process. The tension is not hot. It is underneath the floor.</p>
+    <div class="startrow">
+      <span class="d heat">HEAT 1</span><span class="d leg">LEG 3</span><span class="d trust">TRUST 2</span><span class="d rig">RIG 5</span>
+    </div>
+    <p class="budget"><span>Capacity 7 / round</span><span>4 rounds</span><span>In play: DOMAIN · AGREEMENT · BACKLOG — <em>not</em> DRIVERS</span></p>
+    <details><summary>Keeper panel — fold before play</summary>
+      <div class="det-body">
+        <p><strong>Rigidity Cap 6.</strong> Viability: <span class="mono">LEG ≥ 5 · TRUST ≥ 3 · HEAT ≥ 3 · DRIVERS and ROLES in play</span>.</p>
+        <p><strong>Drift order:</strong> <span class="mono">Legacy Process Reasserts → Extraction Pressure → Attention Decay → Legacy Process Reasserts</span></p>
+        <p class="note">The first drift puts them at Rigidity 6 — on the cap, before anyone plays anything. Capacity is generous and almost nothing is safe to spend it on. The only line is to dismantle before building: reheat the tension, find out what the thing is for, evaluate the inherited agreements down, and only then put accountable roles in. The sequence that wins The Ward ossifies this in round three.</p>
+        <p class="note">This is the situation to run second, not last. Its lesson lands hardest immediately after a table has been rewarded for building well.</p>
+      </div>
+    </details>
+  </div>
+</section>
+ 
+<section class="plate">
+  <div class="plate-head"><span class="plate-no">07</span><h2>Keeper's principle table</h2></div>
+  <div class="stack"><p>After each round, reveal which of these advanced. A principle advances if at least one play that round appears in its row.</p></div>
+  <div class="tw"><table>
+    <thead><tr><th>Principle</th><th>Advances when the group played…</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Effectiveness</strong></td><td>Artful Participation · Role Selection · Circle · Evaluate &amp; Evolve Agreements</td></tr>
+      <tr><td><strong>Consent</strong></td><td>Consent Decision Making <em>by the Steward</em> · Role Selection</td></tr>
+      <tr><td><strong>Empiricism</strong></td><td>Evaluate &amp; Evolve Agreements · Retrospective · Read the Room</td></tr>
+      <tr><td><strong>Continuous Improvement</strong></td><td>Retrospective · Evaluate &amp; Evolve Agreements · Governance Backlog</td></tr>
+      <tr><td><strong>Equivalence</strong></td><td>Double Linking · Check-In · Consent by the right holder · Role Selection</td></tr>
+      <tr><td><strong>Transparency</strong></td><td>Governance Backlog · Describe Organizational Drivers · Check-In</td></tr>
+      <tr><td><strong>Accountability</strong></td><td>Artful Participation · Role Selection · Clarify &amp; Develop Domains · Evaluate &amp; Evolve Agreements</td></tr>
+    </tbody>
+  </table></div>
+</section>
+ 
+<section class="plate">
+  <div class="plate-head"><span class="plate-no">08</span><h2>Tracker</h2></div>
+  <div class="cols">
+    <div class="stack">
+      <h3>Dials</h3>
+      <div class="track">
+        <span class="track-l" style="--dc:var(--heat)">HEAT</span><span class="pips"><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i></span>
+        <span class="track-l" style="--dc:var(--leg)">LEG</span><span class="pips"><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i></span>
+        <span class="track-l" style="--dc:var(--trust)">TRUST</span><span class="pips"><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i></span>
+        <span class="track-l" style="--dc:var(--rig)">RIG</span><span class="pips"><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i></span>
+      </div>
+      <p class="note">Tracks run 0–5; Rigidity runs 0–6 and you will want the seventh box.</p>
+      <h3>In play</h3>
+      <p class="note mono">DRIVERS · BACKLOG · DOMAIN · PROPOSAL · AGREEMENT · ROLES · CIRCLES ___</p>
+    </div>
+    <div class="stack">
+      <h3>Declared / advanced, by round</h3>
+      <div class="roundgrid">
+        <div class="rbox">R1</div><div class="rbox">R2</div><div class="rbox">R3</div><div class="rbox">R4</div><div class="rbox">R5</div><div class="rbox">R6</div><div class="rbox">Σ</div>
+      </div>
+      <p class="note">Write the two declared principles in each box. Circle the ones that advanced. At the end, the uncircled column is the debrief.</p>
+      <h3>Missed most often</h3>
+      <p class="note mono">EFF __ CON __ EMP __ C.IMP __ EQV __ TRA __ ACC __</p>
+    </div>
+  </div>
+</section>
+ 
+<section class="plate">
+  <div class="plate-head"><span class="plate-no">09</span><h2>Running it</h2></div>
+  <div class="stack">
+    <p>You are not a GM and not an adversary. You hold the hidden numbers, apply drift, answer Read the Room honestly, and narrate what the situation does in response. Rotate the job between situations so everyone gets to play.</p>
+    <h3>What to watch for</h3>
+    <ul>
+      <li><strong>Does anyone spend on Read the Room in round one?</strong> This is the rarest move and the most valuable. If no table ever pays for it, it is priced wrong — tell me.</li>
+      <li><strong>Does the table reach for Circle in The Lattice?</strong> That is claim one, live.</li>
+      <li><strong>How long before someone notices Evaluate &amp; Evolve is the only card that reduces Rigidity?</strong> Time it. That moment is the game's thesis arriving on its own.</li>
+      <li><strong>Does anyone route to the holder, or do they all just play it wrong and eat it?</strong> If routing is never worth 1 capacity, the price is wrong.</li>
+    </ul>
+    <h3>Debrief — the part that transfers</h3>
+    <ol>
+      <li>Which card did you most want to play early and hold back? What told you to hold?</li>
+      <li>Name the moment the situation stopped telling you things. What had you just played?</li>
+      <li>Whose Standing did you route around, and what did it cost you?</li>
+      <li>Which principle did you keep declaring and keep missing?</li>
+      <li>Where in your actual work is the Rigidity Cap lower than you have been assuming?</li>
+    </ol>
+    <p class="note">Question five is the whole reason to spend an evening on this. Leave time for it.</p>
+  </div>
+  <details><summary>Spoiler — the inversion matrix, for after you have played</summary>
+    <div class="det-body">
+      <p>Four lines of play, verified against the numbers. Each wins exactly one situation and loses the other two for a different reason. There is no strongest opening, which is the property that keeps the deck from being solvable — and therefore from teaching repertoire instead of reading.</p>
+      <div class="tw"><table>
+        <thead><tr><th>Line</th><th>The Lattice</th><th>The Ward</th><th>The Interchange</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Restraint</strong><br><span class="note">relational only, no structure</span></td><td class="win">viable</td><td class="loss">short — never reaches an agreement</td><td class="loss">ossified R4 — drift alone</td></tr>
+          <tr><td><strong>Moderate build</strong><br><span class="note">trust → drivers → one agreement → evaluate</span></td><td class="win">viable</td><td class="win">viable</td><td class="loss">ossified R3</td></tr>
+          <tr><td><strong>Over-build</strong><br><span class="note">drivers → domains → circle → roles</span></td><td class="loss">ossified R3</td><td class="loss">ossified R4</td><td class="loss">illegal — no DRIVERS to build on</td></tr>
+          <tr><td><strong>Dismantle</strong><br><span class="note">reheat → drivers → evaluate down → roles</span></td><td class="loss">illegal — nothing to evaluate</td><td class="loss">illegal — nothing to evaluate</td><td class="win">viable</td></tr>
+          <tr><td><strong>Consent-spam</strong><br><span class="note">decide before understanding</span></td><td class="loss">ossified R3</td><td class="loss">calcified R3 — Heat 0</td><td>—</td></tr>
+          <tr><td><strong>Pass every round</strong></td><td class="loss">short</td><td class="loss">short</td><td class="loss">ossified R4</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">Moderate build wins two of three. That is intentional, not a balance miss: a line that is right most of the time and catastrophic in the third case is exactly the trap a competent practitioner walks into, and it is more instructive than three situations with three unique answers.</p>
+    </div>
+  </details>
+</section>
+ 
+<footer>Version 0.1 · patterns from Sociocracy 3.0 (CC BY-SA) · built to be marked up, argued with and handed back</footer>
+ 
+</div>
+ 
+<script>
+(function () {
+  var root = document.documentElement;
+  var KEY = 'dplt-theme';
+  var stored = null;
+  try { stored = localStorage.getItem(KEY); } catch (e) {}
+  if (stored === 'dark' || stored === 'light') root.setAttribute('data-theme', stored);
+ 
+  var btn = document.getElementById('theme-toggle');
+  if (!btn) return;
+  function current() {
+    var set = root.getAttribute('data-theme');
+    if (set) return set;
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  function label() {
+    btn.textContent = current() === 'dark' ? 'Light' : 'Dark';
+    btn.setAttribute('aria-label', 'Switch to ' + (current() === 'dark' ? 'light' : 'dark') + ' theme');
+  }
+  label();
+  btn.addEventListener('click', function () {
+    var next = current() === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem(KEY, next); } catch (e) {}
+    label();
+  });
+})();
+</script>
+</body>
+</html>
+ 
